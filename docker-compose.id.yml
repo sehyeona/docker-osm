@@ -17,6 +17,7 @@ services:
       db:
         condition: service_healthy
     environment:
+      - COUNTRY=ID
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASS=${POSTGRES_PASS}
       - POSTGRES_DBNAME=${POSTGRES_DBNAME}

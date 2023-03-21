@@ -54,7 +54,8 @@ class Importer(object):
             'SSL_MODE': 'disable',
             'SSL_CERT': None,
             'SSL_ROOT_CERT': None,
-            'SSL_KEY': None
+            'SSL_KEY': None,
+            'COUNTRY': 'undefined',
         }
         self.osm_file = None
         self.mapping_file = None
@@ -177,6 +178,14 @@ class Importer(object):
 
         # In docker-compose, we should wait for the DB is ready.
         self.info('The checkup is OK.')
+    
+    def create_log_table(self):
+        """Create schema and table to save updated timestamp logs"""
+        create_schema_sql = """CREATE SCHEMA IF NOT EXISTS custom_info;"""
+        creat_table_sql = """CREATE TABLE IF NOT EXISTS custom_info.update_logs
+                (id serial PRIMARY KEY, country VARCHAR(50) NOT NULL, updated_time timestamp NOT NULL);"""
+        self.cursor.execute(create_schema_sql)
+        self.cursor.execute(creat_table_sql)
 
     def create_timestamp(self):
         """Create the timestamp with the undefined value until the real one."""
@@ -185,6 +194,15 @@ class Importer(object):
         timestamp_file.write('UNDEFINED\n')
         timestamp_file.close()
 
+    def update_timestamp_to_database(self, database_timestamp):
+        expected_format = "%Y-%m-%dT%H:%M:%Sz"
+        try:
+            datetime.datetime.strptime(database_timestamp, expected_format)
+            self.cursor.execute(f"""INSERT INTO custom_info.update_logs (id, country, updated_time) 
+            VALUES (default, '{self.region}', '{database_timestamp}');""")
+        except ValueError:
+            self.error(f"Fail to insert update time to database invalid foramt - {database_timestamp}")
+        
     def update_timestamp(self, database_timestamp):
         """Update the current timestamp of the database."""
         file_path = join(self.default['SETTINGS'], 'timestamp.txt')
@@ -375,6 +393,7 @@ class Importer(object):
                         # Update the timestamp in the file.
                         database_timestamp = diff.split('.')[0].split('->-')[1]
                         self.update_timestamp(database_timestamp)
+                        self.update_timestamp_to_database(database_timestamp)
                     else:
                         msg = 'An error occured in imposm with a diff.'
                         self.error(msg)
@@ -390,4 +409,5 @@ if __name__ == '__main__':
     importer.check_settings()
     importer.create_timestamp()
     importer.check_postgis()
+    importer.create_log_table()
     importer.run()

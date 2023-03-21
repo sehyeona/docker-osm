@@ -1,0 +1,58 @@
+version: '3.4'
+
+volumes:
+  import_done_kr:
+  import_queue_kr:
+  cache_kr:
+
+services:
+  imposm-kr:
+    image: kartoza/docker-osm:imposm-latest
+    volumes:
+      - ./settings/kr:/home/settings
+      - import_done_kr:/home/import_done
+      - import_queue_kr:/home/import_queue
+      - cache_kr:/home/cache
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASS=${POSTGRES_PASS}
+      - POSTGRES_DBNAME=${POSTGRES_DBNAME}
+      - POSTGRES_PORT=${POSTGRES_PORT}
+      - POSTGRES_HOST=${POSTGRES_HOST}
+      - TIME=${TIME}
+      - SETTINGS=${SETTINGS}
+      - CACHE=${CACHE}
+      - IMPORT_DONE=${IMPORT_DONE}
+      - IMPORT_QUEUE=${IMPORT_QUEUE}
+      - SRID=${SRID}
+      - OPTIMIZE=${OPTIMIZE}
+      - DBSCHEMA_PRODUCTION=kr_osm
+      - DBSCHEMA_IMPORT=kr_osm_import
+      - DBSCHEMA_BACKUP=kr_osm_backup
+      - QGIS_STYLE=${QGIS_STYLE}
+      - CLIP=${CLIP}
+      - SSL_MODE=${SSL_MODE}
+
+  osmupdate-kr:
+    image: kartoza/docker-osm:osmupdate-latest
+    volumes:
+      - ./settings/kr:/home/settings
+      - import_done_kr:/home/import_done
+      - import_queue_kr:/home/import_queue
+      - cache_kr:/home/cache
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      - MAX_DAYS=${MAX_DAYS}
+      - DIFF=${DIFF}
+      - MAX_MERGE=${MAX_MERGE}
+      - COMPRESSION_LEVEL=${COMPRESSION_LEVEL}
+      - BASE_URL=${BASE_URL}
+      - IMPORT_QUEUE=${IMPORT_QUEUE}
+      - IMPORT_DONE=${IMPORT_DONE}
+      - TIME=${TIME}
+

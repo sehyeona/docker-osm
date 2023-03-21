@@ -189,11 +189,12 @@ class Importer(object):
     
     def create_log_table(self):
         """Create schema and table to save updated timestamp logs"""
-        create_schema_sql = """CREATE SCHEMA IF NOT EXISTS custom_info;"""
-        creat_table_sql = """CREATE TABLE IF NOT EXISTS custom_info.update_logs
-                (id serial PRIMARY KEY, country VARCHAR(50) NOT NULL, updated_time timestamp NOT NULL);"""
-        self.cursor.execute(create_schema_sql)
-        self.cursor.execute(creat_table_sql)
+        sql = """START TRANSACTION;
+        CREATE SCHEMA IF NOT EXISTS custom_info;
+        CREATE TABLE IF NOT EXISTS custom_info.update_logs
+        (id serial PRIMARY KEY, country VARCHAR(50) NOT NULL, updated_time timestamp NOT NULL);
+        COMMIT;"""
+        self.cursor.execute(sql)
 
     def create_timestamp(self):
         """Create the timestamp with the undefined value until the real one."""

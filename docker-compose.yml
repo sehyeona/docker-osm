@@ -12,9 +12,11 @@ services:
       - POSTGRES_DBNAME=${POSTGRES_DBNAME}
       - ALLOW_IP_RANGE=${ALLOW_IP_RANGE}
       - FORCE_SSL=${FORCE_SSL}
+    ports:
+      - ${DB_PORT}:5432
     volumes:
       - osm-postgis-data:/var/lib/postgresql
-      - settings-data:/home/settings
+      - ./settings:/home/settings
     healthcheck:
       test: "pg_isready -d ${POSTGRES_DBNAME}"
 

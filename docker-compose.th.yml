@@ -9,7 +9,7 @@ services:
   imposm-th:
     image: kartoza/docker-osm:imposm-latest
     volumes:
-      - ./setting/th:/home/settings
+      - ./settings/th:/home/settings
       - import_done_th:/home/import_done
       - import_queue_th:/home/import_queue
       - cache_th:/home/cache
@@ -40,7 +40,7 @@ services:
   osmupdate-th:
     image: kartoza/docker-osm:osmupdate-latest
     volumes:
-      - ./setting/th:/home/settings
+      - ./settings/th:/home/settings
       - import_done_th:/home/import_done
       - import_queue_th:/home/import_queue
       - cache_th:/home/cache

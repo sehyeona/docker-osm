@@ -9,7 +9,7 @@ services:
   imposm-jp:
     image: kartoza/docker-osm:imposm-latest
     volumes:
-      - ./setting/jp:/home/settings
+      - ./settings/jp:/home/settings
       - import_done_jp:/home/import_done
       - import_queue_jp:/home/import_queue
       - cache_jp:/home/cache
@@ -40,7 +40,7 @@ services:
   osmupdate-jp:
     image: kartoza/docker-osm:osmupdate-latest
     volumes:
-      - ./setting/jp:/home/settings
+      - ./settings/jp:/home/settings
       - import_done_jp:/home/import_done
       - import_queue_jp:/home/import_queue
       - cache_jp:/home/cache

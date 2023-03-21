@@ -25,6 +25,7 @@ from shutil import move
 from subprocess import call
 from sys import exit, stderr
 from time import sleep
+from datetime import datetime
 
 from psycopg2 import connect, OperationalError
 
@@ -197,7 +198,7 @@ class Importer(object):
     def update_timestamp_to_database(self, database_timestamp):
         expected_format = "%Y-%m-%dT%H:%M:%Sz"
         try:
-            datetime.datetime.strptime(database_timestamp, expected_format)
+            datetime.strptime(database_timestamp, expected_format)
             self.cursor.execute(f"""INSERT INTO custom_info.update_logs (id, country, updated_time) 
             VALUES (default, '{self.region}', '{database_timestamp}');""")
         except ValueError:

@@ -7,7 +7,7 @@ volumes:
 
 services:
   imposm-jp:
-    image: kartoza/docker-osm:imposm-latest
+    image: sehyeona/docker-osm:imposm
     volumes:
       - ./settings/jp:/home/settings
       - import_done_jp:/home/import_done

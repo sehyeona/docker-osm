@@ -7,7 +7,7 @@ volumes:
 
 services:
   imposm-id:
-    image: kartoza/docker-osm:imposm-latest
+    image: sehyeona/docker-osm:imposm
     volumes:
       - ./settings/id:/home/settings
       - import_done_id:/home/import_done

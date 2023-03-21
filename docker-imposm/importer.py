@@ -87,6 +87,13 @@ class Importer(object):
         This will run when the container is starting. If an error occurs, the
         container will stop.
         """
+        # Check valid country
+        if self.default['COUNTRY'] not in ['JP', 'KR', 'TW', 'TH', 'ID']:
+            msg = 'Country not supported : %s' % self.default['COUNTRY']
+            self.error(msg)
+        else:
+            self.info('COUNTRY : %s' % self.default['COUNTRY'])
+
         # Check valid SRID.
         if self.default['SRID'] not in ['4326', '3857']:
             msg = 'SRID not supported : %s' % self.default['SRID']
@@ -174,7 +181,7 @@ class Importer(object):
             self.error(msg)
         elif self.clip_json_file and self.default['QGIS_STYLE']:
             self.info('Geojson for clipping: ' + self.clip_json_file)
-        else:
+        else: 
             self.info('No *.geojson detected, so no clipping.')
 
         # In docker-compose, we should wait for the DB is ready.

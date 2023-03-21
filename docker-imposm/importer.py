@@ -207,7 +207,7 @@ class Importer(object):
         try:
             datetime.strptime(database_timestamp, expected_format)
             self.cursor.execute(f"""INSERT INTO custom_info.update_logs (id, country, updated_time) 
-            VALUES (default, '{self.region}', '{database_timestamp}');""")
+            VALUES (default, '{self.default['COUNTRY']}', '{database_timestamp}');""")
         except ValueError:
             self.error(f"Fail to insert update time to database invalid foramt - {database_timestamp}")
         

@@ -189,6 +189,14 @@ class Importer(object):
     
     def create_log_table(self):
         """Create schema and table to save updated timestamp logs"""
+
+        # check_sql = """SELECT EXISTS (SELECT schema_name FROM information_schema.schemata 
+        # WHERE schema_name = 'custom_info');"""
+        # self.execute(check_sql)
+
+        # # It means that the log schema and table are already exist.
+        # if self.cursor.fetchone()[0] == 1:
+        #     return
         sql = """START TRANSACTION;
         CREATE SCHEMA IF NOT EXISTS custom_info;
         CREATE TABLE IF NOT EXISTS custom_info.update_logs

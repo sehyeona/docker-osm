@@ -12,6 +12,7 @@ services:
       - POSTGRES_DBNAME=${POSTGRES_DBNAME}
       - ALLOW_IP_RANGE=${ALLOW_IP_RANGE}
       - FORCE_SSL=${FORCE_SSL}
+      - EXTRA_CONF=max_connections = 200
     ports:
       - ${DB_PORT}:5432
     volumes:

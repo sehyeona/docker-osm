@@ -30,9 +30,9 @@ services:
       - IMPORT_QUEUE=${IMPORT_QUEUE}
       - SRID=${SRID}
       - OPTIMIZE=${OPTIMIZE}
-      - DBSCHEMA_PRODUCTION=th_osm
-      - DBSCHEMA_IMPORT=th_osm_import
-      - DBSCHEMA_BACKUP=th_osm_backup
+      - DBSCHEMA_PRODUCTION=id_osm
+      - DBSCHEMA_IMPORT=id_osm_import
+      - DBSCHEMA_BACKUP=id_osm_backup
       - QGIS_STYLE=${QGIS_STYLE}
       - CLIP=${CLIP}
       - SSL_MODE=${SSL_MODE}

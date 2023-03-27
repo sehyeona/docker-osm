@@ -57,3 +57,19 @@ services:
       - IMPORT_DONE=${IMPORT_DONE}
       - TIME=${TIME}
 
+  osmenrich-jp:
+    image: kartoza/docker-osm:osmenrich-latest
+    volumes:
+      - ./settings/jp:/home/settings
+      - import_done_jp:/home/import_done
+      - import_queue_jp:/home/import_queue
+      - cache_jp:/home/cache
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      - IMPORT_QUEUE=${IMPORT_QUEUE}
+      - IMPORT_DONE=${IMPORT_DONE}
+      - TIME=${TIME}
+      - DBSCHEMA_PRODUCTION=jp_osm
+      - SSL_MODE=${SSL_MODE}

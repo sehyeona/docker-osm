@@ -57,3 +57,20 @@ services:
       - IMPORT_DONE=${IMPORT_DONE}
       - TIME=${TIME}
 
+  osmenrich-kr:
+    image: kartoza/docker-osm:osmenrich-latest
+    volumes:
+      - ./settings/kr:/home/settings
+      - import_done_kr:/home/import_done
+      - import_queue_kr:/home/import_queue
+      - cache_kr:/home/cache
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      - IMPORT_QUEUE=${IMPORT_QUEUE}
+      - IMPORT_DONE=${IMPORT_DONE}
+      - TIME=${TIME}
+      - DBSCHEMA_PRODUCTION=kr_osm
+      - SSL_MODE=${SSL_MODE}
+
